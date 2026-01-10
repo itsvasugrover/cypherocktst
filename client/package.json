@@ -1,5 +1,5 @@
 {
-  "name": "@cypherock/client",
+  "name": "client",
   "type": "module",
   "version": "0.1.0",
   "author": "Vasu Grover",

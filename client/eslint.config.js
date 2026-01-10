@@ -13,6 +13,7 @@ export default antfu({
   },
 }, {
   rules: {
+    "no-console": ["off"],
     "eslint-comments/no-unlimited-disable": ["off"],
     "antfu/no-top-level-await": ["off"],
     "node/prefer-global/process": ["off"],

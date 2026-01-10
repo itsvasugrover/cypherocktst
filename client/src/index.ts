@@ -1,16 +1,34 @@
 import { Buffer } from "node:buffer";
 
-import { GenericMessage } from "./proto/comms.ts";
+import { Client } from "./client.ts";
+import * as comms from "./proto/comms.ts";
 
-console.warn("Cypherock Client Starting...");
+async function main() {
+  const client = new Client('127.0.0.1', 8080);
 
-// Test creating a message to see if Proto works
-const msg = GenericMessage.create({
-  authInit: {
-    serialId: "TEST-SERIAL",
-    signature: Buffer.from("test-sig"),
-  },
-});
+  try {
+    await client.connect();
 
-const encoded = GenericMessage.encode(msg).finish();
-console.warn(`ProtoBuf Encoded size: ${encoded.length} bytes`);
+    const authPayload = comms.AuthInit.create({
+      serialId: "DEVICE-X-12345",
+      signature: Buffer.from("dummy-signature-bytes")
+    });
+
+    const message = comms.GenericMessage.create({
+      authInit: authPayload
+    });
+
+    console.log("Sending AuthInit...");
+    client.sendMessage(message);
+
+    setTimeout(() => {
+      console.log("Test finished, closing.");
+      client.close();
+    }, 2000);
+
+  } catch (error) {
+    console.error("Main Error:", error);
+  }
+}
+
+main();

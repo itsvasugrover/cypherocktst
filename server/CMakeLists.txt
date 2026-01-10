@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(CypherockServer C CXX)
+project(Server C CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/nanopb/extra ${CMAKE_MODULE_PATH})
 
@@ -43,6 +43,7 @@ include_directories(${PROTO_OUT_DIR})
 
 add_executable(server 
     src/main.cpp
+    src/server.cpp
     ${CRYPTO_SOURCES}
     ${PROTO_SRCS}
 )
