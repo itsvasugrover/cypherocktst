@@ -1,0 +1,28 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": ".",
+      "exclude": [
+        "client/",
+        "server/",
+        "proto/"
+      ]
+    },
+    {
+      "name": "client",
+      "path": "client"
+    },
+    {
+      "name": "server", 
+      "path": "server"
+    },
+    {
+      "name": "proto",
+      "path": "proto"
+    }
+  ],
+  "settings": {
+    // For future use
+  }
+}
