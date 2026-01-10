@@ -4,3 +4,6 @@
 [submodule "server/lib/crypto"]
 	path = server/lib/crypto
 	url = https://github.com/trezor/trezor-crypto
+[submodule "server/lib/spdlog"]
+	path = server/lib/spdlog
+	url = https://github.com/gabime/spdlog.git

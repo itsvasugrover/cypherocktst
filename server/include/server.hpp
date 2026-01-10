@@ -4,18 +4,64 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include "crypto.hpp"
+#include "comms.pb.h"
+#include "pb_encode.h"
+#include "logger.hpp"
 
 using boost::asio::ip::tcp;
 
-void handle_client_message(const std::vector<uint8_t>& data, tcp::socket& socket);
+class Session;
+void handle_client_message(const std::vector<uint8_t>& data, std::shared_ptr<Session> session);
 
-// single connection with a client
 class Session : public std::enable_shared_from_this<Session> {
 public:
     Session(tcp::socket socket) : socket_(std::move(socket)) {}
 
     void start() {
         read_header();
+    }
+
+void send_message(const comms_GenericMessage& msg) {
+        // IMPORTANT: Do not use pb_ostream_from_buffer(NULL, 0) for sizing!!! Spent hours trying to figure this out.
+        pb_ostream_t sizer = PB_OSTREAM_SIZING;
+        
+        if (!pb_encode(&sizer, comms_GenericMessage_fields, &msg)) {
+             spdlog::error("Encode Error (Sizing): {}", PB_GET_ERROR(&sizer));
+             return;
+        }
+        size_t size = sizer.bytes_written;
+        spdlog::info("DEBUG: Encoded message size: {} bytes", size);
+
+        std::vector<uint8_t> body(size);
+        pb_ostream_t stream = pb_ostream_from_buffer(body.data(), size);
+        if (!pb_encode(&stream, comms_GenericMessage_fields, &msg)) {
+             spdlog::error("Encode Error (Writing): {}", PB_GET_ERROR(&stream));
+             return;
+        }
+
+        uint32_t len_le = size;
+        std::vector<uint8_t> header(4);
+        header[0] = len_le & 0xFF;
+        header[1] = (len_le >> 8) & 0xFF;
+        header[2] = (len_le >> 16) & 0xFF;
+        header[3] = (len_le >> 24) & 0xFF;
+
+        auto self(shared_from_this());
+        
+        auto buffer_ptr = std::make_shared<std::vector<uint8_t>>(header);
+        buffer_ptr->insert(buffer_ptr->end(), body.begin(), body.end());
+
+        spdlog::info("DEBUG: Sending {} total bytes to client...", buffer_ptr->size());
+
+        boost::asio::async_write(socket_, boost::asio::buffer(*buffer_ptr),
+            [this, self, buffer_ptr](boost::system::error_code ec, std::size_t bytes_sent) {
+                if (ec) {
+                    spdlog::error("Socket Write Failed: {}", ec.message());
+                } else {
+                    spdlog::info("DEBUG: Successfully sent {} bytes", bytes_sent);
+                }
+        });
     }
 
 private:
@@ -25,13 +71,18 @@ private:
             [this, self](boost::system::error_code ec, std::size_t) {
                 if (!ec) {
                     uint32_t msg_len = 0;
-                    std::memcpy(&msg_len, length_buffer_, 4);
+                    msg_len = length_buffer_[0] | (length_buffer_[1] << 8) | (length_buffer_[2] << 16) | (length_buffer_[3] << 24);
                     
-                    if (msg_len > 1024 * 1024) {
-                        std::cerr << "Message too large, closing." << std::endl;
+                    spdlog::info("DEBUG: Header received. Expecting body: {} bytes", msg_len);
+
+                    if (msg_len > 1024 * 1024) { 
+                        spdlog::error("Message too large, closing.");
                         return; 
                     }
                     read_body(msg_len);
+                } else {
+                    if(ec != boost::asio::error::eof)
+                        spdlog::error("Read Header Failed: {}", ec.message());
                 }
             });
     }
@@ -43,8 +94,10 @@ private:
         boost::asio::async_read(socket_, boost::asio::buffer(data_, length),
             [this, self](boost::system::error_code ec, std::size_t) {
                 if (!ec) {
-                    handle_client_message(data_, socket_);
-                    read_header();
+                    handle_client_message(data_, self);
+                    read_header(); // Loop
+                } else {
+                    spdlog::error("Read Body Failed: {}", ec.message());
                 }
             });
     }

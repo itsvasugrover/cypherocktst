@@ -58,3 +58,6 @@ conanmanifest.txt
 
 # virtual environment
 venv/
+
+# logs
+logs/

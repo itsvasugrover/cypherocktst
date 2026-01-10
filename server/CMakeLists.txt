@@ -6,9 +6,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/nanopb/extra ${CMAKE_MODUL
 find_package(Boost REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Nanopb REQUIRED)
+find_package(Threads REQUIRED)
 
 set(CRYPTO_DIR ${CMAKE_SOURCE_DIR}/lib/crypto)
 include_directories(${CRYPTO_DIR})
+
+set(SPDLOG_DIR "${CMAKE_SOURCE_DIR}/lib/spdlog")
+include_directories(${SPDLOG_DIR}/include)
+add_subdirectory(${SPDLOG_DIR})
 
 set(CRYPTO_SOURCES
     ${CRYPTO_DIR}/bignum.c
@@ -37,6 +42,10 @@ file(MAKE_DIRECTORY ${PROTO_OUT_DIR})
 
 nanopb_generate_cpp(PROTO_SRCS PROTO_HDRS RELPATH "${CMAKE_SOURCE_DIR}/../proto" ${PROTO_FILE})
 
+file(READ "${CMAKE_SOURCE_DIR}/keys/server_private_key.pem" SERVER_PRIV_KEY_CONTENT)
+file(READ "${CMAKE_SOURCE_DIR}/keys/client_public_key.pem" CLIENT_PUB_KEY_CONTENT)
+configure_file("${CMAKE_SOURCE_DIR}/include/keys.hpp.in" "${CMAKE_BINARY_DIR}/keys.hpp" @ONLY)
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_BINARY_DIR})
 include_directories(${PROTO_OUT_DIR})
@@ -44,12 +53,15 @@ include_directories(${PROTO_OUT_DIR})
 add_executable(server 
     src/main.cpp
     src/server.cpp
+    src/crpyto.cpp
     ${CRYPTO_SOURCES}
     ${PROTO_SRCS}
 )
 
 target_link_libraries(server
     nanopb
+    spdlog::spdlog
+    Threads::Threads
 )
 
 set_property(TARGET server PROPERTY CXX_STANDARD 17)

@@ -1,0 +1,6 @@
+#pragma once
+
+#include <string>
+
+const std::string SERVER_PRIV_KEY = R"(@SERVER_PRIV_KEY_CONTENT@)";
+const std::string CLIENT_PUB_KEY = R"(@CLIENT_PUB_KEY_CONTENT@)";

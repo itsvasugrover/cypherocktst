@@ -4,7 +4,11 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/.conan2/**" 
+                "~/.conan2/**" ,
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/lib/spdlog/include", 
+                "${workspaceFolder}/lib/nanopb",
+                "${workspaceFolder}/lib/crypto"
             ]
         }
     ],

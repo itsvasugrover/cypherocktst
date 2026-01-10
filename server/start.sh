@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./build/Release/server
+./build/Release/server "$@"

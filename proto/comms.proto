@@ -38,6 +38,10 @@ message RangeProofRequest {
   uint32 bit_length = 3;
   bytes c1 = 4;
   bytes c2 = 5;
+  bytes sq0 = 6;
+  bytes sq1 = 7;
+  bytes sq2 = 8;
+  bytes sq3 = 9;
 }
 
 message RangeProofResponse {
