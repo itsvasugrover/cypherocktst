@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package comms;
+
+message GenericMessage {
+  oneof payload {
+    AuthInit auth_init = 1;
+    AuthChallenge auth_challenge = 2;
+    AuthResponse auth_response = 3;
+    AuthStatus auth_status = 4;
+    RangeProofRequest range_proof_request = 5;
+    RangeProofResponse range_proof_response = 6;
+  }
+}
+
+message AuthInit {
+  string serial_id = 1;
+  bytes signature = 2;
+}
+
+message AuthChallenge {
+  bytes random_number = 1;
+  bytes server_signature = 2;
+}
+
+message AuthResponse {
+  bytes signature = 1;
+}
+
+message AuthStatus {
+  bool authenticated = 1;
+  string message = 2;
+}
+
+message RangeProofRequest {
+  uint32 min_value = 1;
+  uint32 max_value = 2;
+  uint32 bit_length = 3;
+  bytes c1 = 4;
+  bytes c2 = 5;
+}
+
+message RangeProofResponse {
+  bool success = 1;
+  string message = 2;
+}
