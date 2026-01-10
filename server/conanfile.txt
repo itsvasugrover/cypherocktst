@@ -1,0 +1,12 @@
+[requires]
+boost/1.90.0
+
+[options]
+boost/*:without_system=False
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout
