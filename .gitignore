@@ -1,0 +1,3 @@
+# Ignore directories for storing keys
+client/keys
+server/keys
