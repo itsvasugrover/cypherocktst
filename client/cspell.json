@@ -1,0 +1,20 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+
+  ],
+  "ignoreWords": [],
+  "flagWords": [],
+  "ignorePaths": [
+    "node_modules/**",
+    "build/**",
+    "dist/**",
+    "coverage/**",
+    "*.lock",
+    ".git/**",
+    ".vscode/**",
+    ".github/**",
+    "package-lock.json"
+  ]
+}

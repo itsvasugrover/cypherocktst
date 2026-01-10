@@ -1,0 +1,33 @@
+{
+  "name": "@cypherock/client",
+  "type": "module",
+  "version": "0.1.0",
+  "author": "Vasu Grover",
+  "main": "src/index.ts",
+  "scripts": {
+    "build:proto": "mkdir -p src/proto && protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=src/proto --ts_proto_opt=esModuleInterop=true,forceLong=string,useOptionals=messages --proto_path=./../proto ./../proto/*.proto",
+    "build": "bun run build:proto && tsc",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint --fix 'src/**/*.ts'",
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "bn.js": "^5.2.2",
+    "elliptic": "^6.6.1",
+    "protobufjs": "^8.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.7.3",
+    "@protobuf-ts/plugin": "^2.11.1",
+    "@protobuf-ts/protoc": "^2.11.1",
+    "@types/bn.js": "^5.2.0",
+    "@types/elliptic": "^6.4.18",
+    "@types/node": "^25.0.5",
+    "cspell": "^9.4.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-format": "^1.2.0",
+    "ts-node": "^10.9.2",
+    "ts-proto": "^2.10.1",
+    "typescript": "^5.9.3"
+  }
+}
