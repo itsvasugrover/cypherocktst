@@ -1,0 +1,6 @@
+[submodule "server/lib/nanopb"]
+	path = server/lib/nanopb
+	url = https://github.com/nanopb/nanopb
+[submodule "server/lib/crypto"]
+	path = server/lib/crypto
+	url = https://github.com/trezor/trezor-crypto
