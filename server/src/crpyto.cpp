@@ -128,7 +128,6 @@ std::vector<uint8_t> CryptoUtils::load_public_key_from_pem(const std::string& pe
 }
 
 // --- RANGE PROOF MATH ---
-
 static void uint32_to_bn(uint32_t val, bignum256* bn) {
     bn_zero(bn);
     bn->val[0] = val; 
@@ -153,7 +152,7 @@ bool CryptoUtils::verify_range_proof_math(
     const std::vector<uint8_t>& c2_bytes,
     const std::vector<std::vector<uint8_t>>& squares
 ) {
-    spdlog::info("DEBUG: Verifying Proof for [{}, {}]", min, max);
+    // spdlog::info("DEBUG: Verifying Proof for [{}, {}]", min, max);
 
     curve_point C1, C2, H, G;
     bignum256 bn_min, bn_max;

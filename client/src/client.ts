@@ -38,15 +38,15 @@ export class Client {
   }
 
   public sendMessage(payload: comms.GenericMessage): void {
-    logger.info(`[Client] Sending Message to Server: ${JSON.stringify(payload)}`);
+    // logger.info(`[Client] Sending Message to Server: ${JSON.stringify(payload)}`);
     const buffer = comms.GenericMessage.encode(payload).finish();
 
     const head = Buffer.alloc(4);
-    logger.info(`[Client] Preparing to send ${buffer.length} bytes`);
+    // logger.info(`[Client] Preparing to send ${buffer.length} bytes`);
     head.writeUInt32LE(buffer.length, 0);
 
     const packet = Buffer.concat([head, buffer]);
-    logger.info(`[Client] Sending ${packet.length} bytes`);
+    // logger.info(`[Client] Sending ${packet.length} bytes`);
     this.socket.write(packet);
     const messageType = Object.keys(payload).find(key => (payload as any)[key] !== undefined) || "unknown";
     logger.info(`[Client] Sent ${buffer.length} bytes (Type: ${messageType})`);

@@ -5,7 +5,6 @@
   "author": "Vasu Grover",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "watch 'src/**/*.ts' -- npm run start",
     "build:proto": "mkdir -p src/proto && protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=src/proto --ts_proto_opt=esModuleInterop=true,forceLong=string,useOptionals=messages --proto_path=./../proto ./../proto/*.proto",
     "build": "bun run build:proto && tsc --noEmit",
     "spellcheck": "cspell 'src/**/*.ts'",
