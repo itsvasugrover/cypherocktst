@@ -3,7 +3,8 @@
   "language": "en",
   "words": [
     "protoc",
-    "bufbuild"
+    "bufbuild",
+    "umod"
   ],
   "ignoreWords": [],
   "flagWords": [],

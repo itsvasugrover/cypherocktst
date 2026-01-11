@@ -95,11 +95,13 @@ async function main() {
                 });
                 logger.info("[Client] Sending Range Proof...");
                 client.sendMessage(rangeMsg);
-              } catch (e) {
+              }
+              catch (e) {
                 logger.error(e as any, "Proof Gen Error");
               }
             }
-          } else {
+          }
+          else {
             logger.error("[Client] Authentication Denied.");
             client.close();
           }
@@ -107,7 +109,8 @@ async function main() {
         else if (msg.rangeProofResponse) {
           if (msg.rangeProofResponse.success) {
             logger.info(`[${responseCount + 1}/${TOTAL_ATTEMPTS}] >>> RANGE PROOF VERIFIED SUCCESSFULLY <<<`);
-          } else {
+          }
+          else {
             logger.error(`[${responseCount + 1}/${TOTAL_ATTEMPTS}] >>> RANGE PROOF FAILED <<<`);
           }
 
@@ -118,7 +121,8 @@ async function main() {
             client.close();
           }
         }
-      } catch (e) {
+      }
+      catch (e) {
         logger.error(e as any, "Decode Error");
       }
     }

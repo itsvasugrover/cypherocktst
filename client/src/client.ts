@@ -64,7 +64,7 @@ export class Client {
       logger.info(`[Client] Received Message from Server: ${JSON.stringify(msg)}`);
     }
     catch (e) {
-      logger.error("[Client] Failed to decode response:", e);
+      logger.error(`[Client] Failed to decode response:" ${e}`);
     }
   }
 
