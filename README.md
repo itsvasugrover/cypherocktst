@@ -1,12 +1,12 @@
 # Cypherock TST
 
-Hey, I'm Vasu Grover, and thanks a lot for this test opportunity. I've built out a full client-server setup that shows off Zero-Knowledge Range Proofs, sticking closely to the problem statement. It's got secure authentication, range proof verification, and all the tech requirements nailed down. Let me walk you through what I put together and how to get it running.
+This project implements a secure client-server setup demonstrating Zero-Knowledge Range Proofs, adhering closely to specified requirements. It features secure authentication, range proof verification, and all necessary technical components. Below is a guide to what the project includes and how to set it up and run it.
 
 ## What I Built
 
 This project implements a secure client-server system where the client proves to the server that a secret value lies within a specific range without revealing the actual value. The whole thing uses elliptic curve cryptography for the zero-knowledge proofs.
 
-Key features I added:
+Key features include:
 
 - Mutual authentication using ECDSA signatures and a client serial ID
 - Range proof generation and verification following the exact math from the problem statement
@@ -121,11 +121,11 @@ Check `client/.env.example` for the full list of options.
 
 ## Implementation Notes
 
-I followed the problem statement's range proof algorithm exactly, implementing the four-square decomposition and ECC commitments. The math checks out for both the linear range proof (proving x ∈ [a,b]) and the square commitments.
+The implementation follows the problem statement's range proof algorithm exactly, implementing the four-square decomposition and ECC commitments. The math checks out for both the linear range proof (proving x ∈ [a,b]) and the square commitments.
 
-Security-wise, I added some protections like message size limits, session state validation, and proper cleanup. The authentication flow matches the spec: client signs serial ID hash, server challenges with random nonce, client signs that too.
+Security-wise, the implementation includes protections like message size limits, session state validation, and proper cleanup. The authentication flow matches the spec: client signs serial ID hash, server challenges with random nonce, client signs that too.
 
-The code uses OOP principles with classes for Client, Server, Session, and Crypto utilities. Error handling is comprehensive, and logging helps with debugging.
+The code follows OOP principles with classes for Client, Server, Session, and Crypto utilities. Error handling is comprehensive, and logging helps with debugging.
 
 If the secret value is outside the configured range, the proof will fail as expected - that's how you can test the validation.
 
@@ -137,6 +137,4 @@ If the secret value is outside the configured range, the proof will fail as expe
 - `keygen.js` - Key generation script
 - Build scripts in server/ for CMake setup
 
-The implementation is production-ready with proper build systems, dependency management, and comprehensive logging. Let me know if I did anything wrong or missed any requirements!
-
-**Note**: I personally would have gone with bun for the client due to its performance benefits, bundler for the client and native typescript support, but stuck with Node.js as per the instructions. Also to check full timeline and progress, please refer to my git commits. Use `git log --stat --format=fuller` to see all changes made with timestamps. As mentioned in requirements, I've not open-sourced any code on GitHub. I've used AI tools to help me with the code debugging and understanding, most of the code is written and structured by me.
+The implementation is production-ready with proper build systems, dependency management, and comprehensive logging.
