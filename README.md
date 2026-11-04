@@ -1,5 +1,9 @@
 # Cypherock TST
 
+> [!WARNING]
+> **This repository is now archived and read-only.** It is no longer actively maintained — no further commits, issues, or pull requests will be accepted. The code remains available for reference.
+
+
 This project implements a secure client-server setup demonstrating Zero-Knowledge Range Proofs, adhering closely to specified requirements. It features secure authentication, range proof verification, and all necessary technical components. Below is a guide to what the project includes and how to set it up and run it.
 
 ## What I Built
